@@ -1,4 +1,4 @@
-Feature: Filtrar Musicas No Youtube
+Feature: Filtrar Musicas No Youtubee
 
 Scenario: filtrar uma musica no Youtube
 Given que o usuario acesse o site do Youtube
