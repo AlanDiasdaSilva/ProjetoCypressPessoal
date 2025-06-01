@@ -1,0 +1,50 @@
+ name: Rodar todos os nossos testes.
+
+ on:
+   push:
+     branches:
+       - master
+   pull_request: 
+
+ jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Cache do Cypress
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            cypress-${{ runner.os }}-
+
+      - name: Instalar dependências
+        run: npm ci  
+
+      - name: Verificar estrutura do projeto (debug)
+        run: ls -R  
+
+      - name: Instalar Cypress manualmente
+        run: npx cypress install
+
+      - name: Verificar instalação do Cypress
+        run: npx cypress verify
+
+      - name: Rodar testes do Cypress (headless) no Chrome com Mochawesome
+        run: npx cypress run --headless --browser chrome --reporter mochawesome --spec 'cypress/e2e/features/**/*'
+
+
+
+
+
+
+
